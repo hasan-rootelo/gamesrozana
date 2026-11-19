@@ -3,12 +3,368 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Games Rozana · daily games</title>
-<meta http-equiv="refresh" content="0; url=/drama-roz/">
-<link rel="canonical" href="https://gamesrozana.com/drama-roz/">
-<script>location.replace('/drama-roz/');</script>
+<title>Drama Roz · the daily Pakistani drama quiz</title>
+<meta name="description" content="3 questions a day about Pakistan’s favourite dramas, plus an expert bonus. Play free, then share your score.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Drama Roz · the daily Pakistani drama quiz">
+<meta property="og:description" content="3 questions a day about Pakistan’s favourite dramas. Can you get all 3 and earn the Expert ⭐?">
+<meta property="og:url" content="https://gamesrozana.com/drama-roz/">
+<meta property="og:site_name" content="Games Rozana">
+<meta property="og:image" content="https://gamesrozana.com/drama-roz/share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#3B1530">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Drama Roz">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/drama-roz/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="/drama-roz/icon-192.png">
+<link rel="apple-touch-icon" href="/drama-roz/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--plum:#3B1530;--plum2:#5A2148;--rose:#F3E6EA;--paper:#FFF9F5;--ink:#2B1A24;--muted:#7B6570;--gold:#E3A33B;--green:#2E7D4F;--red:#B23A3A;--line:#EADBE0}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{min-height:100vh;font-family:Karla,system-ui,sans-serif;color:var(--ink);
+  background:linear-gradient(180deg,var(--plum) 0,var(--plum2) 340px,var(--rose) 340px);display:flex;justify-content:center;padding:26px 14px 48px}
+.wrap{width:100%;max-width:540px}
+header{color:#FBEFF2;text-align:center;margin-bottom:18px}
+.logo{display:inline-flex;align-items:center;gap:10px}
+.clap{width:34px;height:28px;border-radius:4px;background:var(--gold);position:relative;transform:rotate(-6deg)}
+.clap::before{content:"";position:absolute;left:-2px;right:-2px;top:-9px;height:9px;border-radius:3px 3px 0 0;
+  background:repeating-linear-gradient(115deg,#fff 0 6px,#2B1A24 6px 12px);transform:rotate(-12deg);transform-origin:left bottom}
+h1{font-family:Fraunces,serif;font-weight:800;font-size:34px;margin:0;letter-spacing:.2px}
+.sub{color:#E5C9D3;font-size:14px;margin-top:6px}
+.feat{display:inline-block;margin-top:12px;background:var(--gold);color:#2B1A24;font-size:13.5px;border-radius:999px;padding:5px 14px}
+.exbox{background:#2B1A24;color:#F7E9EE;border-radius:12px;padding:14px;margin:4px 0 16px;font-size:14.5px;line-height:1.5}
+.exbox strong{display:block;color:var(--gold);font-size:16px;margin-bottom:2px}
+.exbox .btn{margin-top:10px;width:100%}
+.exsmall{display:block;font-size:12.5px;color:#C9AFBA;margin-top:2px}
+@media (prefers-reduced-motion:no-preference){.glow{animation:glow 1.6s ease-out .4s 1}
+@keyframes glow{0%{box-shadow:0 0 0 0 rgba(227,163,59,.85)}60%{box-shadow:0 0 0 14px rgba(227,163,59,0)}100%{box-shadow:0 0 0 0 rgba(227,163,59,0)}}}
+.exbox.won{background:#FFF1D6;color:#5A3A00}.exbox.won strong{color:#8A5A00}
+.btn.gold{background:var(--gold);color:#2B1A24}
+.harder{text-align:center;color:var(--plum2);font-weight:600;font-size:14px;margin:14px 0 0}
+.show.lvl0{background:#E4F3E9;color:#2E7D4F}.show.lvl1{background:#FFF1D6;color:#8A5A00}.show.lvl2{background:#FBE3D9;color:#A2401B}.show.lvl3{background:#3B1530;color:#F3D28A}
+.day{display:block;width:max-content;margin-left:auto;margin-right:auto;margin-top:10px;font-size:13px;color:var(--gold);border:1px solid #8C4A73;border-radius:999px;padding:4px 12px}
+.card{background:var(--paper);border-radius:16px;padding:22px 20px;box-shadow:0 16px 40px rgba(59,21,48,.28)}
+.progress{display:flex;gap:6px;margin-bottom:16px}
+.progress span{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.progress span.ok{background:var(--green)}.progress span.no{background:var(--red)}.progress span.now{background:var(--gold)}
+.qn{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.3px}
+.show{display:inline-block;background:var(--rose);color:var(--plum2);font-weight:700;font-size:12.5px;border-radius:999px;padding:3px 10px;margin-left:6px}
+.q{font-family:Fraunces,serif;font-weight:600;font-size:23px;line-height:1.3;margin:10px 0 16px}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:14px 14px;font:600 16.5px Karla,sans-serif;color:var(--ink);cursor:pointer;display:flex;gap:12px;align-items:center}
+.opt b{width:26px;height:26px;border-radius:50%;background:var(--rose);color:var(--plum2);display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+.opt:hover:not(:disabled){border-color:var(--plum2)}
+.opt:focus-visible,.btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.opt.right{border-color:var(--green);background:#E7F4EC}.opt.right b{background:var(--green);color:#fff}
+.opt.wrong{border-color:var(--red);background:#FBEAEA}.opt.wrong b{background:var(--red);color:#fff}
+.opt:disabled{cursor:default}
+.fact{margin-top:14px;border-radius:10px;padding:12px 14px;font-size:15px;line-height:1.5;background:#F7EFE6}
+.fact strong{display:block;margin-bottom:2px}
+.fact.ok strong{color:var(--green)}.fact.no strong{color:var(--red)}
+.next{margin-top:14px;width:100%}
+.btn{border:0;border-radius:999px;padding:13px 18px;font:700 16px Karla,sans-serif;cursor:pointer;background:var(--plum2);color:#fff;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.wa{background:#1E9E57}.btn.fb{background:#2F5DB4}.btn.light{background:var(--rose);color:var(--plum2)}
+.score{text-align:center}
+.big{font-family:Fraunces,serif;font-weight:800;font-size:56px;margin:4px 0;color:var(--plum2)}
+.marks{font-size:26px;letter-spacing:4px}
+.verdict{font-size:17px;margin:6px 0 16px}
+.share{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.share .full{grid-column:1/-1}
+.status{min-height:20px;font-size:13.5px;color:var(--green);margin-top:8px;text-align:center}
+.share-text{white-space:pre-wrap;font-family:ui-monospace,monospace;font-size:13px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:8px;text-align:left}
+.stats{display:flex;justify-content:center;gap:26px;margin-top:18px;color:var(--muted);font-size:13px}
+.stats b{display:block;font-family:Fraunces,serif;font-size:22px;color:var(--ink)}
+footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:18px;line-height:1.6}
+.streak{display:inline-block;margin-top:6px;background:#FFF1D6;color:#8A5A00;font-weight:700;font-size:14px;border-radius:999px;padding:4px 12px}
+.countdown{margin-top:16px;color:var(--muted);font-size:14px;text-align:center}
+.countdown b{color:var(--plum2);font-variant-numeric:tabular-nums}
+.extras{display:grid;gap:10px;margin-top:18px}
+.extra{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;text-align:left}
+.extra strong{display:block;font-size:15.5px}
+.extra span{display:block;font-size:13.5px;color:var(--muted);margin:2px 0 8px}
+.extra .btn{width:100%;padding:11px 14px;font-size:15px}
+.btn.wach{background:#1E9E57}
+.howto{margin-top:10px;font-size:14px;line-height:1.55;background:#F7EFE6;border-radius:10px;padding:10px 12px}
+.howto ol{margin:4px 0 0;padding-left:20px}
+footer .lnk{background:none;border:0;color:var(--plum2);font:600 12.5px Karla,sans-serif;text-decoration:underline;cursor:pointer;padding:0}
+@media (prefers-reduced-motion:no-preference){.opt{transition:background .15s,border-color .15s}}
+</style>
+<style>
+.loading{text-align:center;color:var(--muted);padding:30px 0}
+.spin{width:28px;height:28px;border:3px solid var(--line);border-top-color:var(--plum2);border-radius:50%;margin:0 auto 12px}
+@media (prefers-reduced-motion:no-preference){.spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}}
+.checking{margin-top:12px;text-align:center;color:var(--muted);font-size:14px}
+.opt.picked{border-color:var(--plum2);background:#F6EEF3}
+.btn.trophy{background:var(--plum);color:#F3D28A}
+.modal{position:fixed;inset:0;background:rgba(43,26,36,.55);display:flex;align-items:flex-end;justify-content:center;z-index:20;padding:12px}
+.modal[hidden]{display:none}
+.sheet{background:var(--paper);width:100%;max-width:540px;max-height:88vh;overflow:auto;border-radius:18px;padding:20px 18px 22px;box-shadow:0 -10px 40px rgba(0,0,0,.25)}
+@media (min-width:600px){.modal{align-items:center}}
+.sheet h2{font-family:Fraunces,serif;margin:0 0 4px;font-size:24px;color:var(--plum2)}
+.sheet .sub2{color:var(--muted);font-size:14px;margin:0 0 14px}
+.close{float:right;background:none;border:0;font-size:26px;line-height:1;color:var(--muted);cursor:pointer;padding:0 4px}
+.lb{list-style:none;margin:0;padding:0}
+.lb li{display:flex;align-items:center;gap:10px;padding:10px 8px;border-bottom:1px solid var(--line);font-size:15.5px}
+.lb li.you{background:#FFF1D6;border-radius:10px}
+.lb .rk{width:30px;text-align:center;font-weight:700;color:var(--plum2)}
+.lb .nm{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb .sc{font-variant-numeric:tabular-nums;font-weight:700}
+.lb .st{color:#8A5A00;font-size:13.5px;width:44px;text-align:right}
+.field{display:block;width:100%;border:1.5px solid var(--line);border-radius:10px;padding:12px;font:600 16px Karla,sans-serif;margin:6px 0 4px}
+.small{font-size:13px;color:var(--muted)}
+.err{color:var(--red);font-size:14px;margin-top:8px}
+footer .lnk{margin:0 6px}
+.sheet .lnk{background:none;border:0;color:var(--plum2);font:600 13px Karla,sans-serif;text-decoration:underline;cursor:pointer;padding:0}
+</style>
 </head>
-<body style="font-family:system-ui,sans-serif;text-align:center;padding:40px">
-<p>Taking you to <a href="/drama-roz/">Drama Roz</a>…</p>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo"><span class="clap" aria-hidden="true"></span><h1>Drama Roz</h1></div>
+    <div class="sub">3 questions a day about Pakistan’s favourite dramas, plus an expert bonus</div>
+    <div class="feat">Today: <b id="feat">Dar-e-Nijaat</b></div>
+    <div class="day" id="day"></div>
+  </header>
+  <main class="card" id="card" aria-live="polite"><div class="loading"><div class="spin"></div>Loading today’s quiz…</div></main>
+  <p class="harder">Get all 3, then try the Expert bonus. Only true fans earn the ⭐</p>
+  <footer>
+    An unofficial fan quiz. Not connected to any TV channel or production company.<br>
+    Drama Roz is a Games Rozana game.<br>
+    <button class="lnk" id="footboard">🏆 Leaderboard</button>
+    <button class="lnk" id="footinstall" hidden>📲 Add to home screen</button>
+  </footer>
+</div>
+
+<div class="modal" id="modal" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mtitle" id="sheet"></div></div>
+
+<script type="module">
+import * as api from './api.js';
+
+// ===== SETTINGS =====
+const GAME_URL='https://gamesrozana.com/drama-roz';
+// Paste the WhatsApp Channel link between the quotes. While it's empty, the button stays hidden.
+const WA_CHANNEL='';
+// =====================
+
+const NQ=3;
+const PK_OFFSET=5*36e5;                                  // new day at midnight Pakistan time
+const START_DAY=Math.floor(Date.UTC(2026,10,18)/864e5);  // Day 1 = 18 Nov 2026
+const todayNo=Math.max(1,Math.floor((Date.now()+PK_OFFSET)/864e5)-START_DAY+1);
+const LEVELS=['Easy','Medium','Hard','Expert'];
+
+const store={get(k,d){try{const v=localStorage.getItem('dr:'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('dr:'+k,JSON.stringify(v))}catch(e){}}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $=id=>document.getElementById(id);
+const card=$('card');
+
+let me=null, day=null, play=null, keys={}, busy=false, player=null;
+
+// ---------- local copy of results (for streaks and stats on this phone) ----------
+const local=n=>store.get('r'+n,null);
+function saveLocal(){
+  if(!play)return;
+  const res=[];for(let q=0;q<Math.min(play.scored,NQ);q++)res.push(play.picks[q]===keys[q].a);
+  store.set('r'+todayNo,{res,expert:play.scored>3?play.picks[3]===keys[3].a:null});
+}
+const done=n=>{const r=local(n);if(r&&r.res&&r.res.length===NQ)return true;const o=store.get('d'+n,null);return !!(o&&o.answers&&o.answers.length===NQ)};
+function streak(){let n=todayNo;if(!done(n))n--;let c=0;while(n>=1&&done(n)){c++;n--}return c}
+function stats(){let played=0,perfect=0,stars=0;for(let n=1;n<=todayNo;n++){const r=local(n);if(r&&r.res&&r.res.length===NQ){played++;if(r.res.every(Boolean))perfect++;if(r.expert)stars++}else if(done(n))played++}return{played,perfect,stars}}
+
+// ---------- boot ----------
+async function boot(){
+  $('day').textContent='Day #'+todayNo;
+  try{
+    me=await api.ready();
+    day=await api.getDay(todayNo);
+    if(!day){card.innerHTML='<div class="loading">Today’s questions are on their way. Please check back a little later!</div>';return}
+    $('feat').textContent=day.show;
+    play=await api.getPlay(todayNo);
+    if(play&&play.scored<play.picks.length){const r=await api.scorePending(todayNo,play);play=r.play}
+    if(play)for(let q=0;q<play.scored;q++)keys[q]=await api.getKey(todayNo,q);
+    saveLocal();
+    render();
+  }catch(e){
+    console.error(e);
+    card.innerHTML='<div class="loading">Couldn’t load today’s quiz. Please check your internet and <a href="">try again</a>.</div>';
+  }
+}
+
+// ---------- screens ----------
+let showExpert=false, justAnswered=-1;
+function render(){
+  if(showExpert)return renderQuestion(3);
+  const answered=play?play.scored:0;
+  if(answered<NQ)return renderQuestion(answered);
+  return renderScore();
+}
+
+function renderQuestion(qi){
+  const q=day.qs[qi], isExpert=qi===3;
+  const answered=play&&play.scored>qi, pick=answered?play.picks[qi]:null, k=keys[qi];
+  let h='';
+  if(!isExpert)h+='<div class="progress">'+[0,1,2].map(i=>{let c='';if(play&&i<play.scored)c=play.picks[i]===keys[i].a?'ok':'no';else if(i===qi)c='now';return `<span class="${c}"></span>`}).join('')+'</div>';
+  h+=isExpert?`<div class="qn">EXPERT BONUS<span class="show lvl3">Expert</span></div>`:`<div class="qn">QUESTION ${qi+1} OF ${NQ}<span class="show lvl${qi}">${LEVELS[qi]}</span></div>`;
+  h+=`<div class="q">${esc(q.q)}</div><div class="opts">`;
+  q.o.forEach((o,i)=>{let c='';if(answered){if(i===k.a)c='right';else if(i===pick)c='wrong'}
+    h+=`<button class="opt ${c}" data-o="${i}" ${answered?'disabled':''}><b>${'ABCDE'[i]}</b>${esc(o)}</button>`});
+  h+='</div><div id="chk"></div>';
+  if(answered){const ok=pick===k.a;
+    const head=isExpert?(ok?'⭐ Brilliant! Expert star earned.':'Not quite. It’s '+esc(q.o[k.a])+'.'):(ok?'Correct!':'Not quite. It’s '+esc(q.o[k.a])+'.');
+    h+=`<div class="fact ${ok?'ok':'no'}"><strong>${head}</strong>${esc(k.f)}</div>`;
+    h+=isExpert?`<button class="btn next" id="go">Back to my score</button>`:`<button class="btn next" id="go">${qi<NQ-1?'Next question':'See my score'}</button>`}
+  card.innerHTML=h;
+  card.querySelectorAll('.opt:not(:disabled)').forEach(b=>b.onclick=()=>choose(qi,+b.dataset.o,b));
+  const go=$('go');if(go){go.onclick=()=>{if(isExpert)showExpert=false;justAnswered=-1;render();window.scrollTo({top:0})};if(justAnswered===qi)go.focus()}
+}
+async function choose(qi,pick,btn){
+  if(busy)return;busy=true;
+  card.querySelectorAll('.opt').forEach(b=>b.disabled=true);btn.classList.add('picked');
+  $('chk').innerHTML='<div class="checking">Checking…</div>';
+  try{
+    const r=await api.answer(todayNo,play,pick);
+    play=r.play;keys[qi]=r.key;saveLocal();justAnswered=qi;
+    renderQuestion(qi);
+  }catch(e){
+    console.error(e);
+    $('chk').innerHTML='<div class="err">Couldn’t save your answer. Check your internet and tap again.</div>';
+    card.querySelectorAll('.opt').forEach(b=>b.disabled=false);btn.classList.remove('picked');
+  }finally{busy=false}
+}
+
+function shareText(){
+  const r=local(todayNo)||{res:[]},s=r.res.filter(Boolean).length,ex=r.expert===null||r.expert===undefined?'':r.expert?' + Expert ⭐':' + Expert ✖',k=streak();
+  return `Drama Roz #${todayNo} 🎬 ${s}/${NQ}${ex}\n${r.res.map(a=>a?'✅':'❌').join('')}${r.expert?'⭐':''}${k>=2?`\n🔥 ${k}-day streak`:''}\nCan you beat me? ${GAME_URL}`;
+}
+
+async function renderScore(){
+  showExpert=false;
+  const r=local(todayNo)||{res:[]},s=r.res.filter(Boolean).length,k=streak(),all=stats();
+  const v=['Time to rewatch a few episodes!','A good start. Keep watching!','So close, true fan!','Full marks!'][s];
+  const expertDone=play.scored>3;
+  const ex=!expertDone?`<div class="exbox"><strong>Expert bonus</strong>Only true fans get this one. Are you one?<span class="exsmall">Your score stays the same either way.</span><button class="btn gold glow" id="tryex">⭐ Try the Expert question</button></div>`
+    :r.expert?`<div class="exbox won"><strong>⭐ Expert star earned!</strong>You really know your dramas.</div>`
+    :`<div class="exbox"><strong>Expert bonus missed</strong>The answer was ${esc(day.qs[3].o[keys[3].a])}. ${esc(keys[3].f)}</div>`;
+  const txt=shareText();
+  card.innerHTML=`<div class="score"><div class="qn">DAY #${todayNo} · ${esc(day.show).toUpperCase()}</div>
+    <div class="big">${s}/${NQ}</div><div class="marks">${r.res.map(a=>a?'✅':'❌').join('')}${r.expert?'⭐':''}</div>
+    <p class="verdict">${v}${k>=1?`<br><span class="streak">🔥 ${k}-day streak</span>`:''}</p>${ex}
+    <div class="share">
+      <a class="btn wa full" href="https://wa.me/?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Share on WhatsApp</a>
+      <a class="btn fb" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(GAME_URL)}" target="_blank" rel="noopener">Facebook</a>
+      <button class="btn light" id="copy">Copy result</button>
+    </div><div class="status" id="status" role="status"></div>
+    <div class="countdown">Next quiz in <b id="cd">…</b><br><small>New questions every day at midnight Pakistan time</small></div>
+    <div class="stats"><div><b>${all.played}</b>Days played</div><div><b>${k}</b>Streak 🔥</div><div><b>${all.perfect}</b>Perfect days</div><div><b>${all.stars}</b>Expert ⭐</div></div>
+    <div class="extras"><div class="extra" id="lbbox"><strong>🏆 Leaderboard</strong><span>See how you rank against other Dar-e-Nijaat fans.</span><button class="btn trophy" id="lbbtn">🏆 Join the leaderboard</button></div>${extrasHTML()}</div></div>`;
+  tickCountdown();if(!cdTimer)cdTimer=setInterval(tickCountdown,1000);
+  const te=$('tryex');if(te)te.onclick=()=>{showExpert=true;renderQuestion(3)};
+  $('copy').onclick=()=>{const out=$('status');const fail=()=>{out.innerHTML='Copy this:<div class="share-text">'+esc(txt)+'</div>'};
+    try{navigator.clipboard.writeText(txt).then(()=>{out.textContent='Copied! Paste it anywhere.'},fail)}catch(e){fail()}};
+  const ib=$('install');if(ib)ib.onclick=()=>doInstall($('howto'));
+  $('lbbtn').onclick=openBoard;
+  try{player=await api.me();if(player.joined){$('lbbox').innerHTML=`<strong>🏆 Leaderboard</strong><span>You’re on the board as <b>${esc(player.name)}</b> with ${player.pts} points.</span><button class="btn trophy" id="lbbtn">🏆 See the leaderboard</button>`;$('lbbtn').onclick=openBoard}}catch(e){}
+}
+
+// ---------- countdown ----------
+let cdTimer=null;
+function tickCountdown(){const el=$('cd');if(!el){clearInterval(cdTimer);cdTimer=null;return}
+  const ms=864e5-((Date.now()+PK_OFFSET)%864e5);if(ms<=1000){location.reload();return}
+  const h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3);
+  el.textContent=`${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`}
+
+// ---------- leaderboard ----------
+const ua=navigator.userAgent;
+const inApp=/FBAN|FBAV|Instagram|WhatsApp|Line\/|wv\)/i.test(ua);
+const isIOS=/iphone|ipad|ipod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const modal=$('modal'),sheet=$('sheet');
+function openModal(html){sheet.innerHTML='<button class="close" aria-label="Close" id="mclose">×</button>'+html;modal.hidden=false;$('mclose').onclick=closeModal;$('mclose').focus()}
+function closeModal(){modal.hidden=true}
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)closeModal()});
+
+async function openBoard(){
+  openModal('<h2 id="mtitle">🏆 Leaderboard</h2><p class="sub2">Points = correct answers across all days. Ties are split by Expert ⭐.</p><div class="loading"><div class="spin"></div>Loading…</div>');
+  try{
+    const [list,p]=await Promise.all([api.leaderboard(20),api.me()]);player=p;
+    list.sort((a,b)=>b.pts-a.pts||b.stars-a.stars);
+    let h='<h2 id="mtitle">🏆 Leaderboard</h2><p class="sub2">Points = correct answers across all days. Ties are split by Expert ⭐.</p>';
+    if(!list.length)h+='<p>No one has joined yet. Be the first!</p>';
+    else h+='<ol class="lb">'+list.map((r,i)=>`<li class="${r.you?'you':''}"><span class="rk">${i<3?['🥇','🥈','🥉'][i]:i+1}</span><span class="nm">${esc(r.name)}${r.you?' (you)':''}</span><span class="sc">${r.pts}</span><span class="st">${r.stars}⭐</span></li>`).join('')+'</ol>';
+    if(p.joined){
+      if(!list.some(r=>r.you)){const rank=await api.myRank(p.pts);h+=`<p class="small" style="margin-top:12px">You’re <b>#${rank}</b> with ${p.pts} points. Keep playing every day to climb!</p>`}
+      h+=`<p class="small" style="margin-top:10px">Showing as <b>${esc(p.name)}</b>. <button class="lnk" id="rename">Change name</button></p>`;
+    }else{
+      h+=`<div class="extra" style="margin-top:16px"><strong>Join the leaderboard</strong><span>Sign in with Google and pick a display name. Only your display name is shown; your email stays private. Your points so far on this phone come with you.</span><button class="btn trophy" id="join">Continue with Google</button><div id="joinmsg"></div></div>`;
+    }
+    sheet.innerHTML='<button class="close" aria-label="Close" id="mclose">×</button>'+h;$('mclose').onclick=closeModal;
+    const j=$('join');if(j)j.onclick=join;
+    const rn=$('rename');if(rn)rn.onclick=()=>askName(p.name);
+  }catch(e){console.error(e);sheet.innerHTML='<button class="close" aria-label="Close" id="mclose">×</button><h2>🏆 Leaderboard</h2><p class="err">Couldn’t load the leaderboard. Please try again.</p>';$('mclose').onclick=closeModal}
+}
+
+async function join(){
+  const msg=$('joinmsg');
+  if(inApp){msg.innerHTML=`<div class="howto"><b>Google sign-in doesn’t work inside WhatsApp or Facebook.</b><ol><li>Tap the <b>⋮</b> or <b>share</b> button on this screen.</li><li>Choose <b>Open in browser</b> (Chrome or Safari).</li><li>Tap 🏆 <b>Leaderboard</b> again there.</li></ol></div>`;return}
+  try{
+    msg.innerHTML='<div class="checking">Opening Google…</div>';
+    const u=await api.joinWithGoogle();me=u;
+    // if they switched to an account that already exists, reload so today's play comes from that account
+    const p=await api.me();
+    if(p.joined){location.reload();return}
+    askName((u.googleName||'').split(' ')[0]);
+  }catch(e){console.error(e);msg.innerHTML=e.code==='auth/popup-closed-by-user'?'':'<div class="err">Sign-in didn’t finish. Please try again.</div>'}
+}
+
+function askName(def){
+  openModal(`<h2 id="mtitle">Pick your display name</h2><p class="sub2">This is how you’ll appear on the leaderboard. You can add your city, e.g. “Ayesha, Lahore”.</p>
+    <input class="field" id="nm" maxlength="20" value="${esc(def||'')}" placeholder="Your name" autocomplete="nickname">
+    <div class="small">2–20 characters. Please keep it friendly.</div>
+    <button class="btn next" id="savenm">Save and show the leaderboard</button><div id="nmmsg"></div>`);
+  const inp=$('nm');inp.focus();inp.select();
+  const save=async()=>{const n=inp.value.trim().replace(/\s+/g,' ');
+    if(n.length<2||n.length>20){$('nmmsg').innerHTML='<div class="err">Please use 2–20 characters.</div>';return}
+    $('savenm').disabled=true;
+    try{await api.setName(n);openBoard();if(play&&play.scored>=NQ)renderScore()}catch(e){console.error(e);$('nmmsg').innerHTML='<div class="err">Couldn’t save. Please try again.</div>';$('savenm').disabled=false}};
+  $('savenm').onclick=save;inp.onkeydown=e=>{if(e.key==='Enter')save()};
+}
+$('footboard').onclick=openBoard;
+
+// ---------- Add to Home Screen ----------
+let installEvt=null;
+const isStandalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;updateInstallUI()});
+window.addEventListener('appinstalled',()=>{installEvt=null;store.set('installed',true);updateInstallUI()});
+function canOfferInstall(){return !isStandalone()&&!store.get('installed',false)}
+function updateInstallUI(){$('footinstall').hidden=!canOfferInstall()}
+function installSteps(){
+  if(inApp)return `<b>First, open this page in your phone’s browser:</b><ol><li>Tap the <b>⋮</b> or <b>share</b> button at the top or bottom of this screen.</li><li>Choose <b>Open in browser</b> (or <b>Open in Safari</b> / <b>Open in Chrome</b>).</li><li>Then tap <b>📲 Add to home screen</b> again.</li></ol>`;
+  if(isIOS)return `<ol><li>Tap the <b>Share</b> button <b>(square with an arrow ↑)</b>. In Safari it’s at the bottom; in Chrome it’s at the top right.</li><li>Scroll down and tap <b>Add to Home Screen</b>.</li><li>Tap <b>Add</b> at the top right.</li></ol>`;
+  if(/android/i.test(ua))return `<ol><li>Tap the <b>⋮</b> menu at the top right of Chrome.</li><li>Tap <b>Add to Home screen</b> (or <b>Install app</b>).</li><li>Tap <b>Add</b> or <b>Install</b>.</li></ol>`;
+  return `<ol><li>In Chrome or Edge, click the <b>install icon</b> at the right end of the address bar, then <b>Install</b>.</li><li>Or press <b>Ctrl + D</b> (<b>⌘ + D</b> on Mac) to bookmark it.</li></ol>`;
+}
+function doInstall(box){
+  if(installEvt){installEvt.prompt();installEvt.userChoice.then(r=>{if(r.outcome==='accepted')store.set('installed',true);installEvt=null;updateInstallUI()});return}
+  if(box){box.innerHTML=installSteps();box.hidden=false;box.scrollIntoView({behavior:'smooth',block:'nearest'})}
+  else openModal('<h2 id="mtitle">📲 Add to home screen</h2><div class="howto">'+installSteps()+'</div>');
+}
+function extrasHTML(){
+  let h='';
+  if(canOfferInstall())h+=`<div class="extra"><strong>📲 Play every day in one tap</strong><span>Add Drama Roz to your home screen. It opens just like an app.</span><button class="btn" id="install">Add to home screen</button><div class="howto" id="howto" hidden></div></div>`;
+  if(WA_CHANNEL)h+=`<div class="extra"><strong>🔔 Get the daily quiz on WhatsApp</strong><span>Follow our channel, then tap the 🔔 bell so you never miss a day.</span><a class="btn wach" href="${esc(WA_CHANNEL)}" target="_blank" rel="noopener">Follow on WhatsApp</a></div>`;
+  return h;
+}
+$('footinstall').onclick=()=>doInstall($('howto'));
+updateInstallUI();
+
+boot();
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/drama-roz/sw.js',{scope:'/drama-roz/'}).catch(()=>{}));
+</script>
 </body>
 </html>
