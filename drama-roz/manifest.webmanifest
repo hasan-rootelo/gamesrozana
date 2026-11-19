@@ -1,0 +1,16 @@
+{
+  "name": "Drama Roz · daily Pakistani drama quiz",
+  "short_name": "Drama Roz",
+  "description": "3 questions a day about Pakistan’s favourite dramas, plus an expert bonus.",
+  "id": "/drama-roz/",
+  "start_url": "/drama-roz/?source=homescreen",
+  "scope": "/drama-roz/",
+  "display": "standalone",
+  "background_color": "#3B1530",
+  "theme_color": "#3B1530",
+  "icons": [
+    { "src": "/drama-roz/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/drama-roz/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/drama-roz/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

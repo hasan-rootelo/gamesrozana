@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Drama Roz · Admin</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#F3E6EA;color:#2B1A24;margin:0;padding:24px 14px}
+.wrap{max-width:760px;margin:0 auto}
+h1{color:#5A2148;margin:0 0 4px}
+.card{background:#fff;border-radius:14px;padding:18px;margin:14px 0;box-shadow:0 6px 20px rgba(59,21,48,.12)}
+.btn{border:0;border-radius:999px;padding:11px 18px;font:700 15px system-ui;cursor:pointer;background:#5A2148;color:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+.muted{color:#7B6570;font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{text-align:left;padding:7px 6px;border-bottom:1px solid #EADBE0;vertical-align:top}
+.ok{color:#2E7D4F;font-weight:700}.no{color:#B23A3A;font-weight:700}
+.right{color:#2E7D4F;font-weight:700}
+details{margin:4px 0}
+#log{white-space:pre-wrap;font-family:ui-monospace,monospace;font-size:13px;background:#FFF9F5;padding:10px;border-radius:8px;max-height:240px;overflow:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎬 Drama Roz · Admin</h1>
+  <p class="muted">Only the Games Rozana admin account can publish questions. Players never see this page.</p>
+
+  <div class="card" id="signin">
+    <p>Sign in with the admin Google account (hasanabisapps).</p>
+    <button class="btn" id="go">Sign in with Google</button>
+    <p id="who" class="muted"></p>
+  </div>
+
+  <div class="card" id="pub" hidden>
+    <h2 style="margin-top:0">1. Choose a question pack</h2>
+    <p class="muted">Pick the <b>.json</b> question pack file Claude gave you. It stays on your computer. Never upload it to GitHub, because it contains the answers.</p>
+    <input type="file" id="file" accept=".json,application/json">
+    <div id="preview"></div>
+  </div>
+
+  <div class="card" id="status" hidden>
+    <h2 style="margin-top:0">2. Publish</h2>
+    <p class="muted">Publishing a day that already exists replaces it. Players who already played that day keep their score.</p>
+    <button class="btn" id="publish" disabled>Publish all days in this pack</button>
+    <div id="log" style="margin-top:12px"></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp, getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, getFirestore, doc, getDoc, setDoc } from './fb.js';
+const app = initializeApp({
+  apiKey: 'AIzaSyD7tW5e8eaSLU8-lcWVWaF260L2lPeFIeM',
+  authDomain: 'gamesrozana-b5b7c.firebaseapp.com',
+  projectId: 'gamesrozana-b5b7c',
+  storageBucket: 'gamesrozana-b5b7c.firebasestorage.app',
+  messagingSenderId: '49406969713',
+  appId: '1:49406969713:web:1c6ef55d46d47433fe58d0'
+});
+const auth = getAuth(app), db = getFirestore(app);
+const ADMIN = 'hasanabisapps@gmail.com';
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const START = Date.UTC(2026, 10, 18), PK = 5 * 36e5;
+const dateOf = n => new Date(START + (n - 1) * 864e5).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+let pack = null;
+
+$('go').onclick = async () => {
+  try { const p = new GoogleAuthProvider(); p.setCustomParameters({ prompt: 'select_account' }); await signInWithPopup(auth, p); }
+  catch (e) { $('who').textContent = 'Sign-in failed: ' + e.message; }
+};
+onAuthStateChanged(auth, u => {
+  if (!u || u.isAnonymous) return;
+  if (u.email !== ADMIN) { $('who').innerHTML = `Signed in as <b>${esc(u.email)}</b>. That’s not the admin account. Please sign in with ${ADMIN}.`; return; }
+  $('who').innerHTML = `✅ Signed in as <b>${esc(u.email)}</b>`;
+  $('pub').hidden = false;
+});
+
+$('file').onchange = async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    pack = JSON.parse(await f.text());
+    if (!pack.days || !pack.days.length) throw new Error('No days found in this file.');
+    for (const d of pack.days) {
+      if (!d.n || !d.show || d.qs.length !== 4 || d.keys.length !== 4) throw new Error('Day ' + d.n + ' is incomplete.');
+      d.qs.forEach((q, i) => { if (q.o.length !== 5 || !(d.keys[i].a >= 0 && d.keys[i].a <= 4)) throw new Error('Day ' + d.n + ' question ' + (i + 1) + ' is invalid.'); });
+    }
+  } catch (err) { $('preview').innerHTML = `<p class="no">This file can’t be used: ${esc(err.message)}</p>`; return; }
+  let h = `<p><b>${pack.days.length} days</b> in this pack.</p><table><tr><th>Day</th><th>Date (Pakistan)</th><th>Topic</th><th>Online now?</th></tr>`;
+  for (const d of pack.days) h += `<tr><td>#${d.n}</td><td>${dateOf(d.n)}</td><td><details><summary>${esc(d.show)}</summary>${d.qs.map((q, i) => `<p><b>${i < 3 ? 'Q' + (i + 1) : 'Expert'}:</b> ${esc(q.q)}<br>${q.o.map((o, j) => j === d.keys[i].a ? `<span class="right">✔ ${esc(o)}</span>` : esc(o)).join(' · ')}</p>`).join('')}</details></td><td id="st${d.n}">…</td></tr>`;
+  $('preview').innerHTML = h + '</table>';
+  $('status').hidden = false; $('publish').disabled = false;
+  for (const d of pack.days) {
+    try { const s = await getDoc(doc(db, 'days', String(d.n))); $('st' + d.n).innerHTML = s.exists() ? '<span class="ok">Yes</span>' : '<span class="no">Not yet</span>'; }
+    catch (err) { $('st' + d.n).textContent = '?'; }
+  }
+};
+
+$('publish').onclick = async () => {
+  $('publish').disabled = true; const log = $('log'); log.textContent = '';
+  let ok = 0;
+  for (const d of pack.days) {
+    try {
+      await setDoc(doc(db, 'days', String(d.n)), { show: d.show, qs: d.qs.map(q => ({ q: q.q, o: q.o })) });
+      for (let i = 0; i < 4; i++) await setDoc(doc(db, 'keys', d.n + '_' + i), { a: d.keys[i].a, f: d.keys[i].f });
+      log.textContent += `✅ Day ${d.n} (${dateOf(d.n)}) published\n`; $('st' + d.n).innerHTML = '<span class="ok">Yes</span>'; ok++;
+    } catch (err) { log.textContent += `❌ Day ${d.n} failed: ${err.message}\n`; }
+  }
+  log.textContent += `\nDone: ${ok} of ${pack.days.length} days published.`;
+  $('publish').disabled = false;
+};
+</script>
+</body>
+</html>
