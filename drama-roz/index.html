@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drama Roz · the daily Pakistani drama quiz</title>
+<meta name="description" content="3 questions a day about Pakistan’s favourite dramas, plus an expert bonus. Play free, then share your score.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Drama Roz · the daily Pakistani drama quiz">
+<meta property="og:description" content="3 questions a day about Pakistan’s favourite dramas. Can you get all 3 and earn the Expert ⭐?">
+<meta property="og:url" content="https://gamesrozana.com/drama-roz/">
+<meta property="og:site_name" content="Games Rozana">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%AC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--plum:#3B1530;--plum2:#5A2148;--rose:#F3E6EA;--paper:#FFF9F5;--ink:#2B1A24;--muted:#7B6570;--gold:#E3A33B;--green:#2E7D4F;--red:#B23A3A;--line:#EADBE0}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{min-height:100vh;font-family:Karla,system-ui,sans-serif;color:var(--ink);
+  background:linear-gradient(180deg,var(--plum) 0,var(--plum2) 340px,var(--rose) 340px);display:flex;justify-content:center;padding:26px 14px 48px}
+.wrap{width:100%;max-width:540px}
+header{color:#FBEFF2;text-align:center;margin-bottom:18px}
+.logo{display:inline-flex;align-items:center;gap:10px}
+.clap{width:34px;height:28px;border-radius:4px;background:var(--gold);position:relative;transform:rotate(-6deg)}
+.clap::before{content:"";position:absolute;left:-2px;right:-2px;top:-9px;height:9px;border-radius:3px 3px 0 0;
+  background:repeating-linear-gradient(115deg,#fff 0 6px,#2B1A24 6px 12px);transform:rotate(-12deg);transform-origin:left bottom}
+h1{font-family:Fraunces,serif;font-weight:800;font-size:34px;margin:0;letter-spacing:.2px}
+.sub{color:#E5C9D3;font-size:14px;margin-top:6px}
+.feat{display:inline-block;margin-top:12px;background:var(--gold);color:#2B1A24;font-size:13.5px;border-radius:999px;padding:5px 14px}
+.exbox{background:#2B1A24;color:#F7E9EE;border-radius:12px;padding:14px;margin:4px 0 16px;font-size:14.5px;line-height:1.5}
+.exbox strong{display:block;color:var(--gold);font-size:16px;margin-bottom:2px}
+.exbox .btn{margin-top:10px;width:100%}
+.exsmall{display:block;font-size:12.5px;color:#C9AFBA;margin-top:2px}
+@media (prefers-reduced-motion:no-preference){.glow{animation:glow 1.6s ease-out .4s 1}
+@keyframes glow{0%{box-shadow:0 0 0 0 rgba(227,163,59,.85)}60%{box-shadow:0 0 0 14px rgba(227,163,59,0)}100%{box-shadow:0 0 0 0 rgba(227,163,59,0)}}}
+.exbox.won{background:#FFF1D6;color:#5A3A00}.exbox.won strong{color:#8A5A00}
+.btn.gold{background:var(--gold);color:#2B1A24}
+.harder{text-align:center;color:var(--plum2);font-weight:600;font-size:14px;margin:14px 0 0}
+.show.lvl0{background:#E4F3E9;color:#2E7D4F}.show.lvl1{background:#FFF1D6;color:#8A5A00}.show.lvl2{background:#FBE3D9;color:#A2401B}.show.lvl3{background:#3B1530;color:#F3D28A}
+.day{display:block;width:max-content;margin-left:auto;margin-right:auto;margin-top:10px;font-size:13px;color:var(--gold);border:1px solid #8C4A73;border-radius:999px;padding:4px 12px}
+.card{background:var(--paper);border-radius:16px;padding:22px 20px;box-shadow:0 16px 40px rgba(59,21,48,.28)}
+.progress{display:flex;gap:6px;margin-bottom:16px}
+.progress span{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.progress span.ok{background:var(--green)}.progress span.no{background:var(--red)}.progress span.now{background:var(--gold)}
+.qn{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.3px}
+.show{display:inline-block;background:var(--rose);color:var(--plum2);font-weight:700;font-size:12.5px;border-radius:999px;padding:3px 10px;margin-left:6px}
+.q{font-family:Fraunces,serif;font-weight:600;font-size:23px;line-height:1.3;margin:10px 0 16px}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:14px 14px;font:600 16.5px Karla,sans-serif;color:var(--ink);cursor:pointer;display:flex;gap:12px;align-items:center}
+.opt b{width:26px;height:26px;border-radius:50%;background:var(--rose);color:var(--plum2);display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+.opt:hover:not(:disabled){border-color:var(--plum2)}
+.opt:focus-visible,.btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.opt.right{border-color:var(--green);background:#E7F4EC}.opt.right b{background:var(--green);color:#fff}
+.opt.wrong{border-color:var(--red);background:#FBEAEA}.opt.wrong b{background:var(--red);color:#fff}
+.opt:disabled{cursor:default}
+.fact{margin-top:14px;border-radius:10px;padding:12px 14px;font-size:15px;line-height:1.5;background:#F7EFE6}
+.fact strong{display:block;margin-bottom:2px}
+.fact.ok strong{color:var(--green)}.fact.no strong{color:var(--red)}
+.next{margin-top:14px;width:100%}
+.btn{border:0;border-radius:999px;padding:13px 18px;font:700 16px Karla,sans-serif;cursor:pointer;background:var(--plum2);color:#fff;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.wa{background:#1E9E57}.btn.fb{background:#2F5DB4}.btn.light{background:var(--rose);color:var(--plum2)}
+.score{text-align:center}
+.big{font-family:Fraunces,serif;font-weight:800;font-size:56px;margin:4px 0;color:var(--plum2)}
+.marks{font-size:26px;letter-spacing:4px}
+.verdict{font-size:17px;margin:6px 0 16px}
+.share{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.share .full{grid-column:1/-1}
+.status{min-height:20px;font-size:13.5px;color:var(--green);margin-top:8px;text-align:center}
+.share-text{white-space:pre-wrap;font-family:ui-monospace,monospace;font-size:13px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:8px;text-align:left}
+.stats{display:flex;justify-content:center;gap:26px;margin-top:18px;color:var(--muted);font-size:13px}
+.stats b{display:block;font-family:Fraunces,serif;font-size:22px;color:var(--ink)}
+footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:18px;line-height:1.6}
+@media (prefers-reduced-motion:no-preference){.opt{transition:background .15s,border-color .15s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo"><span class="clap" aria-hidden="true"></span><h1>Drama Roz</h1></div>
+    <div class="sub">3 questions a day about Pakistan’s favourite dramas, plus an expert bonus</div>
+    <div class="feat">Now featuring: <b>Dar-e-Nijaat</b></div>
+    <div class="day" id="day"></div>
+  </header>
+  <main class="card" id="card" aria-live="polite"></main>
+  <p class="harder">Get all 3, then try the Expert bonus. Only true fans earn the ⭐</p>
+  <footer>
+    An unofficial fan quiz. Not connected to any TV channel or production company.<br>
+    Drama Roz is a Games Rozana game.
+  </footer>
+</div>
+<script>
+// Where the game lives. Shares point here.
+const GAME_URL='https://gamesrozana.com/drama-roz';
+// Each question: q, options (the first one is the right answer), a short fact shown after answering.
+const DAYS=[
+ {show:'Dar-e-Nijaat',qs:[
+  {q:'Which channel airs Dar-e-Nijaat?',o:['ARY Digital','Hum TV','Geo Entertainment','Green Entertainment','Express Entertainment'],f:'It premiered on ARY Digital on 1 August 2026.'},
+  {q:'Which actor plays Abu Bakar?',o:['Sheheryar Munawar','Wahaj Ali','Fawad Khan','Bilal Abbas Khan','Feroze Khan'],f:'It is his first major on-screen pairing with Durefishan Saleem.'},
+  {q:'Who wrote Dar-e-Nijaat?',o:['Umera Ahmed','Farhat Ishtiaq','Khalil-ur-Rehman Qamar','Hashim Nadeem','Saima Akram Chaudhry'],f:'Umera Ahmed also wrote Zindagi Gulzar Hai.'},
+  {q:'Dar-e-Nijaat is the debut drama of which production house?',o:['Three’s Entertainment','Big Bang Entertainment','MD Productions','7th Sky Entertainment','Six Sigma Plus'],f:'Stars like Hania Aamir and Kinza Hashmi helped build the buzz before it aired.'}]},
+ {show:'Dar-e-Nijaat',qs:[
+  {q:'What does “Dar-e-Nijaat” mean?',o:['The Door to Salvation','The House of Love','The Road Home','The Gate of Sorrow','The Promise of Spring'],f:'“Dar” means door and “nijaat” means salvation or freedom.'},
+  {q:'Which actress plays Zaryab?',o:['Durefishan Saleem','Yumna Zaidi','Hania Aamir','Sajal Aly','Ayeza Khan'],f:'Her choices as Zaryab have sparked plenty of debate among viewers.'},
+  {q:'Which actor plays Zamil, Zaryab’s best friend?',o:['Nameer Khan','Ahad Raza Mir','Danish Taimoor','Imran Ashraf','Hamza Sohail'],f:'At the start of the story, Zaryab and Zamil are best friends.'},
+  {q:'Who directed Dar-e-Nijaat?',o:['Saqib Khan','Nadeem Baig','Haseeb Hassan','Siraj-ul-Haque','Mohammed Ehteshamuddin'],f:'Saqib Khan directed it from Umera Ahmed’s script.'}]},
+ {show:'Classics',qs:[
+  {q:'In Humsafar, Fawad Khan played Ashar. Who played Khirad?',o:['Mahira Khan','Saba Qamar','Mawra Hocane','Ayeza Khan','Sanam Baloch'],f:'Humsafar made Fawad Khan and Mahira Khan household names across South Asia.'},
+  {q:'In Tere Bin, who played Meerab?',o:['Yumna Zaidi','Hania Aamir','Sajal Aly','Iqra Aziz','Saboor Aly'],f:'Wahaj Ali played Murtasim opposite her.'},
+  {q:'Which channel aired Humsafar?',o:['Hum TV','ARY Digital','Geo Entertainment','PTV Home','Urdu 1'],f:'Humsafar first aired in 2011.'},
+  {q:'What is the heroine’s name in Zindagi Gulzar Hai?',o:['Kashaf','Khirad','Meerab','Mehwish','Zaryab'],f:'Kashaf was played by Sanam Saeed, opposite Fawad Khan as Zaroon.'}]}
+];
+const LEVELS=['Easy','Medium','Hard','Expert'];
+const NQ=3,NO=5; // 3 main questions; question 4 is the optional Expert bonus
+const START=new Date(2026,10,18);
+const store={get(k,d){try{const v=localStorage.getItem('dr:'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('dr:'+k,JSON.stringify(v))}catch(e){}}};
+const todayNo=Math.max(1,Math.floor((new Date().setHours(0,0,0,0)-START)/864e5)+1);
+let dayNo=todayNo;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dayData=n=>DAYS[(n-1)%DAYS.length];
+const shuffle=(n,q)=>{const a=[...Array(NO).keys()];let s=n*7919+q*104729+17;for(let i=NO-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const state=n=>store.get('d'+n,{answers:[],step:0,expert:null,expertSeen:false});
+const card=document.getElementById('card');
+
+function render(){
+  const d=dayData(dayNo),st=state(dayNo);
+  document.getElementById('day').textContent='Day #'+dayNo+' · '+(d.show==='Classics'?'Classic dramas':d.show);
+  if(st.step>=NQ&&!(st.step===NQ+1))return renderScore(d,st);
+  if(st.step===NQ+1)return renderExpert(d,st);
+  const qi=st.step,q=d.qs[qi],answered=st.answers.length>qi;
+  let h='<div class="progress">'+[...Array(NQ).keys()].map(i=>`<span class="${i<st.answers.length?(st.answers[i]===0?'ok':'no'):(i===qi?'now':'')}"></span>`).join('')+'</div>';
+  h+=`<div class="qn">QUESTION ${qi+1} OF ${NQ}<span class="show lvl${qi}">${LEVELS[qi]}</span></div><div class="q">${esc(q.q)}</div><div class="opts">`;
+  shuffle(dayNo,qi).forEach((oi,k)=>{
+    let cls='';if(answered){if(oi===0)cls='right';else if(oi===st.answers[qi])cls='wrong'}
+    h+=`<button class="opt ${cls}" data-o="${oi}" ${answered?'disabled':''}><b>${'ABCDE'[k]}</b>${esc(q.o[oi])}</button>`});
+  h+='</div>';
+  if(answered){const ok=st.answers[qi]===0;
+    h+=`<div class="fact ${ok?'ok':'no'}"><strong>${ok?'Correct!':'Not quite. It’s '+esc(q.o[0])+'.'}</strong>${esc(q.f)}</div>
+        <button class="btn next" id="go">${qi<NQ-1?'Next question':'See my score'}</button>`}
+  card.innerHTML=h;
+  card.querySelectorAll('.opt:not(:disabled)').forEach(b=>b.onclick=()=>{const s=state(dayNo);if(s.answers.length>qi)return;s.answers.push(+b.dataset.o);store.set('d'+dayNo,s);render()});
+  const go=document.getElementById('go');if(go)go.onclick=()=>{const s=state(dayNo);s.step=s.answers.length;store.set('d'+dayNo,s);render();document.getElementById('go')?.focus()};
+}
+function score(st){return st.answers.filter(a=>a===0).length}
+function shareText(){const st=state(dayNo),s=score(st),ex=st.expert===null?'':st.expert===0?' + Expert ⭐':' + Expert ✖';return `Drama Roz #${dayNo} 🎬 ${s}/${NQ}${ex}\n${st.answers.map(a=>a===0?'✅':'❌').join('')}${st.expert===0?'⭐':''}\nCan you beat me? ${GAME_URL}`}
+function renderScore(d,st){
+  const s=score(st),v=['Time to rewatch a few episodes!','A good start. Keep watching!','So close, true fan!','Full marks!'][s];
+  const ex=st.expert===null?`<div class="exbox"><strong>Expert bonus</strong>Only true fans get this one. Are you one?<span class="exsmall">Your score stays the same either way.</span><button class="btn gold glow" id="tryex">⭐ Try the Expert question</button></div>`:st.expert===0?`<div class="exbox won"><strong>⭐ Expert star earned!</strong>You really know your dramas.</div>`:`<div class="exbox"><strong>Expert bonus missed</strong>The answer was ${esc(d.qs[3].o[0])}. ${esc(d.qs[3].f)}</div>`;
+  const all=stats(),txt=shareText();
+  card.innerHTML=`<div class="score"><div class="qn">DAY #${dayNo} · ${esc(d.show).toUpperCase()}</div>
+    <div class="big">${s}/${NQ}</div><div class="marks">${st.answers.map(a=>a===0?'✅':'❌').join('')}${st.expert===0?'⭐':''}</div><p class="verdict">${v}</p>${ex}
+    <div class="share">
+      <a class="btn wa full" href="https://wa.me/?text=${encodeURIComponent(txt)}" target="_blank" rel="noopener">Share on WhatsApp</a>
+      <a class="btn fb" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(GAME_URL)}" target="_blank" rel="noopener">Facebook</a>
+      <button class="btn light" id="copy">Copy result</button>
+    </div><div class="status" id="status" role="status"></div>
+    <div class="stats"><div><b>${all.played}</b>Days played</div><div><b>${all.perfect}</b>Perfect days</div><div><b>${all.stars}</b>Expert ⭐</div></div>
+    ${dayNo===todayNo?'<p class="verdict" style="font-size:14px;color:var(--muted);margin-top:16px">New questions tomorrow.</p>':''}</div>`;
+  const te=document.getElementById('tryex');if(te)te.onclick=()=>{const s2=state(dayNo);s2.step=NQ+1;store.set('d'+dayNo,s2);render()};
+  document.getElementById('copy').onclick=()=>{const out=document.getElementById('status');
+    const fail=()=>{out.innerHTML='Copy this:<div class="share-text">'+esc(txt)+'</div>'};
+    try{navigator.clipboard.writeText(txt).then(()=>{out.textContent='Copied! Paste it anywhere.'},fail)}catch(e){fail()}};
+}
+function stats(){let played=0,perfect=0,stars=0;for(let n=1;n<=Math.max(todayNo,dayNo);n++){const s=store.get('d'+n,null);if(s&&s.answers.length===NQ){played++;if(score(s)===NQ)perfect++;if(s.expert===0)stars++}}
+  return{played,perfect,stars}}
+function renderExpert(d,st){
+  const q=d.qs[3],done=st.expert!==null;
+  let h=`<div class="qn">EXPERT BONUS<span class="show lvl3">Expert</span></div><div class="q">${esc(q.q)}</div><div class="opts">`;
+  shuffle(dayNo,3).forEach((oi,k)=>{let cls='';if(done){if(oi===0)cls='right';else if(oi===st.expert)cls='wrong'}
+    h+=`<button class="opt ${cls}" data-o="${oi}" ${done?'disabled':''}><b>${'ABCDE'[k]}</b>${esc(q.o[oi])}</button>`});
+  h+='</div>';
+  if(done){const ok=st.expert===0;h+=`<div class="fact ${ok?'ok':'no'}"><strong>${ok?'⭐ Brilliant! Expert star earned.':'Not quite. It’s '+esc(q.o[0])+'.'}</strong>${esc(q.f)}</div><button class="btn next" id="back">Back to my score</button>`}
+  card.innerHTML=h;
+  card.querySelectorAll('.opt:not(:disabled)').forEach(b=>b.onclick=()=>{const s=state(dayNo);if(s.expert!==null)return;s.expert=+b.dataset.o;store.set('d'+dayNo,s);render()});
+  const bk=document.getElementById('back');if(bk)bk.onclick=()=>{const s=state(dayNo);s.step=NQ;store.set('d'+dayNo,s);render()};
+}
+render();
+</script>
+</body>
+</html>
