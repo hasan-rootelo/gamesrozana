@@ -164,12 +164,12 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const $=id=>document.getElementById(id);
 const card=$('card');
 
-let me=null, day=null, play=null, keys={}, busy=false, player=null;
+let me=null, day=null, play=null, keys={}, busy=false, player=null, reloadAfterName=false;
 
 // ---------- local copy of results (for streaks and stats on this phone) ----------
 const local=n=>store.get('r'+n,null);
 function saveLocal(){
-  if(!play)return;
+  if(!play||play.forfeit)return;
   const res=[];for(let q=0;q<Math.min(play.scored,NQ);q++)res.push(play.picks[q]===keys[q].a);
   store.set('r'+todayNo,{res,expert:play.scored>3?play.picks[3]===keys[3].a:null});
 }
@@ -186,8 +186,11 @@ async function boot(){
     if(!day){card.innerHTML='<div class="loading">Today’s questions are on their way. Please check back a little later!</div>';return}
     $('feat').textContent=day.show;
     play=await api.getPlay(todayNo);
-    if(play&&play.scored<play.picks.length){const r=await api.scorePending(todayNo,play);play=r.play}
-    if(play)for(let q=0;q<play.scored;q++)keys[q]=await api.getKey(todayNo,q);
+    // already played today on this device (e.g. before signing in to another account)? Then this account can't play today.
+    const lr=local(todayNo);
+    if(!play&&lr&&lr.res&&lr.res.length)play=await api.forfeitToday(todayNo);
+    if(play&&!play.forfeit&&play.scored<play.picks.length){const r=await api.scorePending(todayNo,play);play=r.play}
+    if(play&&!play.forfeit)for(let q=0;q<play.scored;q++)keys[q]=await api.getKey(todayNo,q);
     saveLocal();
     render();
   }catch(e){
@@ -200,6 +203,7 @@ async function boot(){
 let showExpert=false, justAnswered=-1;
 function render(){
   if(showExpert)return renderQuestion(3);
+  if(play&&play.forfeit)return renderScore();
   const answered=play?play.scored:0;
   if(answered<NQ)return renderQuestion(answered);
   return renderScore();
@@ -247,8 +251,9 @@ async function renderScore(){
   showExpert=false;
   const r=local(todayNo)||{res:[]},s=r.res.filter(Boolean).length,k=streak(),all=stats();
   const v=['Time to rewatch a few episodes!','A good start. Keep watching!','So close, true fan!','Full marks!'][s];
-  const expertDone=play.scored>3;
-  const ex=!expertDone?`<div class="exbox"><strong>Expert bonus</strong>Only true fans get this one. Are you one?<span class="exsmall">Your score stays the same either way.</span><button class="btn gold glow" id="tryex">⭐ Try the Expert question</button></div>`
+  const locked=!!play.forfeit, expertDone=locked||play.scored>3;
+  const ex=locked?`<div class="exbox"><strong>Already played today</strong>You played today’s quiz on this phone before signing in, so today doesn’t count for this account. Your leaderboard points start again tomorrow!</div>`
+    :!expertDone?`<div class="exbox"><strong>Expert bonus</strong>Only true fans get this one. Are you one?<span class="exsmall">Your score stays the same either way.</span><button class="btn gold glow" id="tryex">⭐ Try the Expert question</button></div>`
     :r.expert?`<div class="exbox won"><strong>⭐ Expert star earned!</strong>You really know your dramas.</div>`
     :`<div class="exbox"><strong>Expert bonus missed</strong>The answer was ${esc(day.qs[3].o[keys[3].a])}. ${esc(keys[3].f)}</div>`;
   const txt=shareText();
@@ -314,8 +319,11 @@ async function join(){
   if(inApp){msg.innerHTML=`<div class="howto"><b>Google sign-in doesn’t work inside WhatsApp or Facebook.</b><ol><li>Tap the <b>⋮</b> or <b>share</b> button on this screen.</li><li>Choose <b>Open in browser</b> (Chrome or Safari).</li><li>Tap 🏆 <b>Leaderboard</b> again there.</li></ol></div>`;return}
   try{
     msg.innerHTML='<div class="checking">Opening Google…</div>';
+    const before=me&&me.uid;
     const u=await api.joinWithGoogle();me=u;
-    // if they switched to an account that already exists, reload so today's play comes from that account
+    // switched to a Google account that already existed? It may not have played today, so lock it for today
+    // if this phone already played (stops replaying the quiz after seeing the answers).
+    if(u.uid!==before){const lr=local(todayNo);if(lr&&lr.res&&lr.res.length)await api.forfeitToday(todayNo);reloadAfterName=true}
     const p=await api.me();
     if(p.joined){location.reload();return}
     askName((u.googleName||'').split(' ')[0]);
@@ -331,7 +339,7 @@ function askName(def){
   const save=async()=>{const n=inp.value.trim().replace(/\s+/g,' ');
     if(n.length<2||n.length>20){$('nmmsg').innerHTML='<div class="err">Please use 2–20 characters.</div>';return}
     $('savenm').disabled=true;
-    try{await api.setName(n);openBoard();if(play&&play.scored>=NQ)renderScore()}catch(e){console.error(e);$('nmmsg').innerHTML='<div class="err">Couldn’t save. Please try again.</div>';$('savenm').disabled=false}};
+    try{await api.setName(n);if(reloadAfterName){location.reload();return}openBoard();if(play&&play.scored>=NQ)renderScore()}catch(e){console.error(e);$('nmmsg').innerHTML='<div class="err">Couldn’t save. Please try again.</div>';$('savenm').disabled=false}};
   $('savenm').onclick=save;inp.onkeydown=e=>{if(e.key==='Enter')save()};
 }
 $('footboard').onclick=openBoard;

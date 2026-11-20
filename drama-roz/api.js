@@ -52,6 +52,13 @@ async function getPlayer() {
   return s.exists() ? s.data() : null;
 }
 
+// Lock this account for today (used when today's quiz was already played on this device under another account).
+export async function forfeitToday(n) {
+  try { await setDoc(doc(db, 'plays', user.uid + '_' + n), { uid: user.uid, day: n, picks: [], scored: 0, pts: 0, star: 0, forfeit: true }); }
+  catch (e) { /* already has a play today: nothing to lock */ }
+  return getPlay(n);
+}
+
 // Lock in an answer, then score it. Returns the updated play and the key for that question.
 export async function answer(n, play, pick) {
   const ref = doc(db, 'plays', user.uid + '_' + n);
